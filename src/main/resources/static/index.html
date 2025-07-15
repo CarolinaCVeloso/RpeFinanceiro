@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPE Financeiro - Sistema de Gestão</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-content">
+            <div class="logo-area">
+                <span class="logo-icon">RPE</span>
+                <span class="logo-title">Financeiro</span>
+            </div>
+            <nav class="main-nav">
+                <a href="#" class="nav-link active" data-page="clientes">Clientes</a>
+            </nav>
+            <div class="header-actions">
+                <span class="date-display" id="current-date"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-wrapper">
+        <div class="container">
+            <!-- Clientes Page -->
+            <section id="clientes-page" class="page active">
+                <div class="page-header">
+                    <h1>Gestão de Clientes</h1>
+                    <p>Gerencie os clientes e visualize suas faturas</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Lista de Clientes</h3>
+                        <p>Total: <span id="clientes-count">0</span> clientes</p>
+                    </div>
+                    <div class="table-container">
+                        <table class="table" id="clientes-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>CPF</th>
+                                    <th>Idade</th>
+                                    <th>Status</th>
+                                    <th>Limite de Crédito</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientes-tbody">
+                                <!-- Clientes serão carregados aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Faturas do Cliente Page -->
+            <section id="faturas-cliente-page" class="page" style="display: none;">
+                <div class="page-header">
+                    <h1>Faturas do Cliente</h1>
+                    <p id="cliente-info">Lista de faturas do cliente</p>
+                    <button class="btn btn-secondary" onclick="voltarParaClientes()">Voltar para Clientes</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Faturas</h3>
+                        <p>Total: <span id="faturas-cliente-count">0</span> faturas</p>
+                    </div>
+                    <div class="table-container">
+                        <table class="table" id="faturas-cliente-table">
+                            <thead>
+                                <tr>
+                                    <th>Valor</th>
+                                    <th>Data de Vencimento</th>
+                                    <th>Status</th>
+                                    <th>Data de Pagamento</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="faturas-cliente-tbody">
+                                <!-- Faturas do cliente serão carregadas aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Carregando...</p>
+        </div>
+    </div>
+
+    <!-- Error Message -->
+    <div id="error" class="error-message" style="display: none;"></div>
+
+    <script src="app.js"></script>
+</body>
+</html> 
