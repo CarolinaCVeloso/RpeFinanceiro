@@ -333,6 +333,12 @@ function formatCurrency(value) {
 }
 
 function formatDate(dateString) {
+    // Se vier no formato yyyy-MM-dd, apenas reordene para dd/MM/yyyy
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+        const [ano, mes, dia] = dateString.split('-');
+        return `${dia}/${mes}/${ano}`;
+    }
+    // Se vier com hora/timezone, use toLocaleDateString normalmente
     return new Date(dateString).toLocaleDateString('pt-BR');
 }
 

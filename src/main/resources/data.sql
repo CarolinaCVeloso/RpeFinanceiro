@@ -7,8 +7,8 @@ INSERT INTO clientes (nome, cpf, data_nascimento, limite_credito, limite_disponi
 ('Pedro Oliveira', '11122233344', '1988-11-10', 7500.00, 7500.00, 'A'),
 ('Ana Costa', '55566677788', '1992-05-18', 4000.00, 4000.00, 'A'),
 ('Carlos Ferreira', '99988877766', '1987-09-25', 6000.00, 6000.00, 'A'),
-('Lucia Mendes', '12312312312', '1995-12-03', 30000.00, 0.00, 'B'),
-('Roberto Alves', '45645645645', '1983-08-14', 1500.00, 0.00, 'B');
+('Lucia Mendes', '12312312312', '1995-12-03', 3850.00, 0.00, 'B'),
+('Roberto Alves', '45645645645', '1983-08-14', 4500.00, 0.00, 'B');
 
 -- Inserir faturas de exemplo
 -- Faturas pagas
@@ -28,17 +28,17 @@ INSERT INTO faturas (cliente_id, data_vencimento, valor, status) VALUES
 -- CASO 1: Cliente com faturas de 2 dias de atraso (NÃO deve ser bloqueado)
 -- Ana Costa - faturas vencidas há 2 dias
 INSERT INTO faturas (cliente_id, data_vencimento, valor, status) VALUES
-(4, DATEADD('DAY', -2, CURRENT_DATE), 800.00, 'A'),
-(4, DATEADD('DAY', -2, CURRENT_DATE), 600.00, 'A');
+(4, CURRENT_DATE - INTERVAL '2 days', 800.00, 'A'),
+(4, CURRENT_DATE - INTERVAL '2 days', 600.00, 'A');
 
 -- CASO 2: Cliente com faturas de 3 dias de atraso (DEVE ser bloqueado automaticamente)
 -- Lucia Mendes - faturas vencidas há 3 dias
 INSERT INTO faturas (cliente_id, data_vencimento, valor, status) VALUES
-(6, DATEADD('DAY', -3, CURRENT_DATE), 1200.00, 'A'),
-(6, DATEADD('DAY', -3, CURRENT_DATE), 950.00, 'A');
+(6, CURRENT_DATE - INTERVAL '3 days', 1200.00, 'A'),
+(6, CURRENT_DATE - INTERVAL '3 days', 950.00, 'A');
 
 -- CASO 3: Cliente com faturas de mais de 3 dias de atraso (DEVE ser bloqueado)
 -- Roberto Alves - faturas vencidas há 5 dias
 INSERT INTO faturas (cliente_id, data_vencimento, valor, status) VALUES
-(7, DATEADD('DAY', -5, CURRENT_DATE), 1500.00, 'A'),
-(7, DATEADD('DAY', -5, CURRENT_DATE), 1100.00, 'A'); 
+(7, CURRENT_DATE - INTERVAL '5 days', 1500.00, 'A'),
+(7, CURRENT_DATE - INTERVAL '5 days', 1100.00, 'A'); 

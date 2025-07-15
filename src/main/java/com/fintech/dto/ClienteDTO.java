@@ -3,31 +3,39 @@ package com.fintech.dto;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class ClienteDTO {
     
     private Long id;
     
+    @Schema(description = "Nome completo do cliente", example = "João Silva")
     @NotBlank(message = "Nome é obrigatório")
     @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres")
     private String nome;
     
+    @Schema(description = "CPF do cliente (apenas números)", example = "12345678901")
     @NotBlank(message = "CPF é obrigatório")
     @Pattern(regexp = "\\d{11}", message = "CPF deve ter 11 dígitos")
     private String cpf;
     
+    @Schema(description = "Data de nascimento do cliente (yyyy-MM-dd)", example = "1985-03-15")
     @NotNull(message = "Data de nascimento é obrigatória")
     @Past(message = "Data de nascimento deve ser no passado")
     private LocalDate dataNascimento;
     
+    @Schema(description = "Status do cliente: A=Ativo, B=Bloqueado", example = "A")
     private String statusBloqueio; // A=Ativo, B=Bloqueado
     
+    @Schema(description = "Limite de crédito total do cliente", example = "5000.00")
     @NotNull(message = "Limite de crédito é obrigatório")
     @DecimalMin(value = "0.0", message = "Limite de crédito deve ser maior ou igual a zero")
     private BigDecimal limiteCredito;
     
+    @Schema(description = "Limite disponível atualmente para o cliente", example = "2000.00")
     private BigDecimal limiteDisponivel;
     
+    @Schema(description = "Idade do cliente (calculada)", example = "38")
     private int idade;
     
     // Construtores

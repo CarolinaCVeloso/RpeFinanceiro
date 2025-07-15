@@ -52,31 +52,38 @@ public class FaturaServiceImpl implements FaturaService {
         fatura.setStatus("B"); // B=Aberta
         
         Fatura faturaSalva = faturaRepository.save(fatura);
+        
+        // Chama a rotina de verificação de faturas vencidas após criar
+        verificarEAtualizarStatusFaturas();
+        
         return converterParaDTO(faturaSalva);
     }
     
     @Override
     @Transactional
     public FaturaDTO registrarPagamento(Long id) {
+        return registrarPagamento(id, null);
+    }
+
+    // Novo método sobrecarregado para permitir data customizada
+    @Transactional
+    public FaturaDTO registrarPagamento(Long id, LocalDate dataPagamento) {
         Fatura fatura = faturaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Fatura não encontrada: " + id));
         
         if ("P".equals(fatura.getStatus())) {
             throw new RuntimeException("Fatura já foi paga");
         }
-        
-        // Registra o pagamento - muda status para PAGA
-        fatura.registrarPagamento();
+        // Usa data customizada se informada, senão LocalDate.now()
+        if (dataPagamento != null) {
+            fatura.setDataPagamento(dataPagamento);
+        } else {
+            fatura.registrarPagamento();
+        }
         Fatura faturaAtualizada = faturaRepository.save(fatura);
-        
-        // Força o flush para garantir que as mudanças sejam persistidas
         faturaRepository.flush();
-        
         System.out.println("Pagamento registrado para fatura " + id + " do cliente " + fatura.getCliente().getId());
-        
-        // Verifica se o cliente pode ser desbloqueado após o pagamento
         verificarDesbloqueioCliente(fatura.getCliente().getId());
-        
         return converterParaDTO(faturaAtualizada);
     }
     

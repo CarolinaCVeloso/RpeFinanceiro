@@ -46,7 +46,12 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setDataNascimento(clienteDTO.getDataNascimento());
         cliente.setLimiteCredito(clienteDTO.getLimiteCredito());
         cliente.setStatusBloqueio("A"); // A=Ativo
-        
+        // Ajuste: se limiteDisponivel vier nulo, usar o valor do limiteCredito
+        if (clienteDTO.getLimiteDisponivel() == null) {
+            cliente.setLimiteDisponivel(clienteDTO.getLimiteCredito());
+        } else {
+            cliente.setLimiteDisponivel(clienteDTO.getLimiteDisponivel());
+        }
         Cliente clienteSalvo = clienteRepository.save(cliente);
         return converterParaDTO(clienteSalvo);
     }
