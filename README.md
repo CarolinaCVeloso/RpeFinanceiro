@@ -60,6 +60,11 @@ O frontend estático está em `src/main/resources/static`. Basta acessar [http:/
 - Datas são tratadas no timezone America/Sao_Paulo.
 - O volume `pgdata` garante persistência dos dados do banco no Docker.
 
+## Melhorias com tempo:
+- Implementaria um cálculo onde mostrasse além do limite total o limite efetivamente disponível para cada cliente, considerando o seu limite total e os valores de faturas.
+- Faria mais verificações e implementaria uma lógica mais robusta no bloqueio e desbloqueio de clientes.
+- Tentaria implementar parte de segurança e uso de tokens para manter dados como cpf e data de nascimento seguros.
+
 ## Contato
 
 Dúvidas ou sugestões? Abra uma issue ou entre em contato!

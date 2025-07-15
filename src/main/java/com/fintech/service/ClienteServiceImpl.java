@@ -3,7 +3,6 @@ package com.fintech.service;
 import com.fintech.dto.ClienteDTO;
 import com.fintech.model.Cliente;
 import com.fintech.repository.ClienteRepository;
-import com.fintech.repository.FaturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,12 +93,10 @@ public class ClienteServiceImpl implements ClienteService {
     public ClienteDTO desbloquear(Long id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado: " + id));
-        
-        // Desbloqueia o cliente e normaliza o limite para R$ 2.000,00
-        cliente.desbloquear();
+                cliente.desbloquear();
         Cliente clienteDesbloqueado = clienteRepository.save(cliente);
         
-        System.out.println("Cliente " + id + " desbloqueado com sucesso. Limite normalizado para R$ 2.000,00");
+        System.out.println("Cliente " + id + " desbloqueado com sucesso.");
         
         return converterParaDTO(clienteDesbloqueado);
     }
