@@ -128,14 +128,17 @@ function navigateToPage(page) {
 
 // Funções de carregamento de dados
 async function loadClientes() {
+    console.log('Carregando lista de clientes...');
     showLoading();
     try {
         const response = await fetch(`${API_BASE_URL}/clientes`);
         if (!response.ok) throw new Error('Erro ao carregar clientes');
         
         const clientes = await response.json();
+        console.log('Clientes carregados:', clientes);
         displayClientes(clientes);
     } catch (error) {
+        console.error('Erro ao carregar clientes:', error);
         showError('Erro ao carregar clientes: ' + error.message);
     } finally {
         hideLoading();
@@ -159,6 +162,7 @@ async function loadFaturasCliente(clienteId, clienteNome) {
 
 // Funções de exibição
 function displayClientes(clientes) {
+    console.log('Exibindo clientes:', clientes);
     const tbody = document.getElementById('clientes-tbody');
     const countElement = document.getElementById('clientes-count');
     
@@ -179,6 +183,7 @@ function displayClientes(clientes) {
     
     tbody.innerHTML = '';
     clientes.forEach((cliente, index) => {
+        console.log(`Cliente ${cliente.id}: status=${cliente.statusBloqueio}, limite=${cliente.limiteCredito}`);
         const row = document.createElement('tr');
         row.style.animation = `fadeInUp 0.3s ease ${index * 0.1}s both`;
         row.innerHTML = `
@@ -269,6 +274,8 @@ function voltarParaClientes() {
     // Mostrar página de clientes
     document.getElementById('clientes-page').classList.add('active');
     document.getElementById('clientes-page').style.display = 'block';
+    // Recarregar lista de clientes para mostrar status atualizado
+    loadClientes();
 }
 
 // Funções de ações
@@ -286,6 +293,10 @@ async function registrarPagamento(faturaId) {
         if (currentClienteId) {
             loadFaturasCliente(currentClienteId, document.getElementById('cliente-info').textContent.replace('Faturas de ', ''));
         }
+        
+        // Recarregar também a lista de clientes para atualizar status
+        loadClientes();
+        
         showSuccessMessage('Pagamento registrado com sucesso!');
     } catch (error) {
         showErrorMessage('Erro ao registrar pagamento: ' + error.message);

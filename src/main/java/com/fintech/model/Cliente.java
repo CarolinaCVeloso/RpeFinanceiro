@@ -124,7 +124,8 @@ public class Cliente {
     
     public void desbloquear() {
         this.statusBloqueio = "A";
-        // Mantém o limite zerado conforme regra de negócio
+        // Normaliza o limite de crédito para R$ 2.000,00 quando desbloqueado
+        this.limiteCredito = new BigDecimal("2000.00");
     }
     
     @Override

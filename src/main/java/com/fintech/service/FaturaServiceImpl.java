@@ -69,6 +69,11 @@ public class FaturaServiceImpl implements FaturaService {
         fatura.registrarPagamento();
         Fatura faturaAtualizada = faturaRepository.save(fatura);
         
+        // Força o flush para garantir que as mudanças sejam persistidas
+        faturaRepository.flush();
+        
+        System.out.println("Pagamento registrado para fatura " + id + " do cliente " + fatura.getCliente().getId());
+        
         // Verifica se o cliente pode ser desbloqueado após o pagamento
         verificarDesbloqueioCliente(fatura.getCliente().getId());
         
@@ -106,21 +111,34 @@ public class FaturaServiceImpl implements FaturaService {
             Cliente cliente = clienteRepository.findById(clienteId)
                     .orElseThrow(() -> new RuntimeException("Cliente não encontrado: " + clienteId));
             
+            System.out.println("Verificando desbloqueio do cliente " + clienteId + " - Status atual: " + cliente.getStatusBloqueio());
+            
             // Verifica se o cliente está bloqueado
             if (!cliente.isBloqueado()) {
+                System.out.println("Cliente " + clienteId + " já está desbloqueado");
                 return; // Cliente já está desbloqueado
             }
             
-            // Verifica se o cliente tem faturas em atraso
-            List<Fatura> faturasAtrasadas = faturaRepository.findFaturasAtrasadasPorCliente(clienteId);
+            // Verifica se o cliente tem faturas não pagas (em aberto ou atrasadas)
+            List<Fatura> faturasNaoPagas = faturaRepository.findFaturasNaoPagasPorCliente(clienteId);
             
-            // Se não há faturas em atraso, desbloqueia o cliente
-            if (faturasAtrasadas.isEmpty()) {
+            System.out.println("Cliente " + clienteId + " possui " + faturasNaoPagas.size() + " faturas não pagas");
+            
+            // Só desbloqueia se não há faturas não pagas
+            if (faturasNaoPagas.isEmpty()) {
+                System.out.println("Desbloqueando cliente " + clienteId + " - não há faturas pendentes");
                 clienteService.desbloquear(clienteId);
+                System.out.println("Cliente " + clienteId + " desbloqueado e limite normalizado para R$ 2.000,00 após pagamento");
+            } else {
+                System.out.println("Cliente " + clienteId + " mantido bloqueado - ainda possui " + faturasNaoPagas.size() + " faturas pendentes");
+                for (Fatura fatura : faturasNaoPagas) {
+                    System.out.println("  - Fatura " + fatura.getId() + " (Status: " + fatura.getStatus() + ")");
+                }
             }
         } catch (Exception e) {
             // Log do erro mas não interrompe o fluxo
             System.err.println("Erro ao verificar desbloqueio do cliente " + clienteId + ": " + e.getMessage());
+            e.printStackTrace();
         }
     }
     

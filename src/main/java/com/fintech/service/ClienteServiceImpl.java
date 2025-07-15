@@ -21,9 +21,6 @@ public class ClienteServiceImpl implements ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
     
-    @Autowired
-    private FaturaRepository faturaRepository;
-    
     @Override
     public List<ClienteDTO> listarTodos() {
         return clienteRepository.findAll().stream()
@@ -93,8 +90,12 @@ public class ClienteServiceImpl implements ClienteService {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado: " + id));
         
+        // Desbloqueia o cliente e normaliza o limite para R$ 2.000,00
         cliente.desbloquear();
         Cliente clienteDesbloqueado = clienteRepository.save(cliente);
+        
+        System.out.println("Cliente " + id + " desbloqueado com sucesso. Limite normalizado para R$ 2.000,00");
+        
         return converterParaDTO(clienteDesbloqueado);
     }
     

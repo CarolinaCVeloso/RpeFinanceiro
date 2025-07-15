@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
+import com.fintech.dto.ClienteDTO;
+import com.fintech.service.ClienteService;
 
 @RestController
 @RequestMapping("/faturas")
@@ -21,6 +24,9 @@ public class FaturaController {
     
     @Autowired
     private FaturaService faturaService;
+    
+    @Autowired
+    private ClienteService clienteService;
     
     @GetMapping("/{id}")
     @Operation(summary = "Lista todas as faturas de um cliente")
@@ -53,7 +59,12 @@ public class FaturaController {
     public ResponseEntity<?> registrarPagamento(@PathVariable Long id) {
         try {
             FaturaDTO faturaAtualizada = faturaService.registrarPagamento(id);
-            return ResponseEntity.ok(faturaAtualizada);
+            
+            // Retorna informações da fatura e do cliente atualizado
+            return ResponseEntity.ok(Map.of(
+                "fatura", faturaAtualizada,
+                "mensagem", "Pagamento registrado com sucesso"
+            ));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("Erro ao registrar pagamento: " + e.getMessage());
         } catch (Exception e) {
@@ -76,6 +87,22 @@ public class FaturaController {
             return ResponseEntity.ok("Verificação de faturas vencidas executada com sucesso");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao verificar faturas vencidas: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/cliente/{clienteId}/status")
+    @Operation(summary = "Obtém status atualizado do cliente")
+    public ResponseEntity<?> obterStatusCliente(@PathVariable Long clienteId) {
+        try {
+            // Busca informações atualizadas do cliente
+            Optional<ClienteDTO> cliente = clienteService.buscarPorId(clienteId);
+            if (cliente.isPresent()) {
+                return ResponseEntity.ok(cliente.get());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro ao obter status do cliente: " + e.getMessage());
         }
     }
 } 

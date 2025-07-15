@@ -27,4 +27,7 @@ public interface FaturaRepository extends JpaRepository<Fatura, Long> {
     
     @Query("SELECT f FROM Fatura f WHERE f.cliente.id = :clienteId AND f.status = 'B'")
     List<Fatura> findFaturasAbertasPorCliente(@Param("clienteId") Long clienteId);
+    
+    @Query("SELECT f FROM Fatura f WHERE f.cliente.id = :clienteId AND f.status != 'P'")
+    List<Fatura> findFaturasNaoPagasPorCliente(@Param("clienteId") Long clienteId);
 } 
