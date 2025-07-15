@@ -1,5 +1,5 @@
-# Use uma imagem oficial do Java para rodar o Spring Boot
-FROM openjdk:17-jdk-slim
+# Use uma imagem oficial do Java 21 para rodar o Spring Boot
+FROM eclipse-temurin:21-jdk-jammy
 
 WORKDIR /app
 
