@@ -100,6 +100,7 @@ public class FaturaServiceImpl implements FaturaService {
                 
                 // Se a fatura está atrasada há mais de 3 dias, bloqueia o cliente
                 if (fatura.getDiasAtraso() > 3) {
+                    System.out.println("[DEBUG] Bloqueando cliente por atraso: id=" + fatura.getCliente().getId() + ", dias atraso=" + fatura.getDiasAtraso());
                     clienteService.bloquear(fatura.getCliente().getId());
                 }
             }

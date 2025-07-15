@@ -195,7 +195,7 @@ function displayClientes(clientes) {
                     ${getStatusClienteTexto(cliente.statusBloqueio)}
                 </span>
             </td>
-            <td style="font-weight: 600; color: var(--primary-dark);">${formatCurrency(cliente.limiteCredito)}</td>
+            <td style="font-weight: 600; color: var(--primary-dark);">${formatCurrency(cliente.limiteDisponivel)}</td>
             <td>
                 <button class="btn btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.8rem;" onclick="verFaturasCliente(${cliente.id}, '${cliente.nome}')">
                     Ver Faturas

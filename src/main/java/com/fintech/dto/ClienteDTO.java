@@ -26,19 +26,21 @@ public class ClienteDTO {
     @DecimalMin(value = "0.0", message = "Limite de crédito deve ser maior ou igual a zero")
     private BigDecimal limiteCredito;
     
+    private BigDecimal limiteDisponivel;
+    
     private int idade;
     
     // Construtores
     public ClienteDTO() {}
     
-    public ClienteDTO(Long id, String nome, String cpf, LocalDate dataNascimento, 
-                     String statusBloqueio, BigDecimal limiteCredito) {
+    public ClienteDTO(Long id, String nome, String cpf, LocalDate dataNascimento, String statusBloqueio, BigDecimal limiteCredito, BigDecimal limiteDisponivel) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.statusBloqueio = statusBloqueio;
         this.limiteCredito = limiteCredito;
+        this.limiteDisponivel = limiteDisponivel;
         this.idade = LocalDate.now().getYear() - dataNascimento.getYear();
     }
     
@@ -90,6 +92,9 @@ public class ClienteDTO {
     public void setLimiteCredito(BigDecimal limiteCredito) {
         this.limiteCredito = limiteCredito;
     }
+    
+    public BigDecimal getLimiteDisponivel() { return limiteDisponivel; }
+    public void setLimiteDisponivel(BigDecimal limiteDisponivel) { this.limiteDisponivel = limiteDisponivel; }
     
     public int getIdade() {
         return idade;

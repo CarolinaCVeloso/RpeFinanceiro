@@ -76,11 +76,11 @@ public class ClienteServiceImpl implements ClienteService {
     public ClienteDTO bloquear(Long id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado: " + id));
-        
         // Bloqueia o cliente e zera o limite de crédito
         cliente.bloquear();
         Cliente clienteBloqueado = clienteRepository.save(cliente);
-        
+        clienteRepository.flush(); // Garante persistência imediata
+        System.out.println("[DEBUG] Service: Cliente " + id + " bloqueado e limite zerado.");
         return converterParaDTO(clienteBloqueado);
     }
     
@@ -140,7 +140,8 @@ public class ClienteServiceImpl implements ClienteService {
                 cliente.getCpf(),
                 cliente.getDataNascimento(),
                 cliente.getStatusBloqueio(),
-                cliente.getLimiteCredito()
+                cliente.getLimiteCredito(),
+                cliente.getLimiteDisponivel()
         );
     }
 } 

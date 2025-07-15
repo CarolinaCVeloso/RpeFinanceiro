@@ -1,14 +1,14 @@
 -- Script para popular o banco de dados com dados de exemplo
 
 -- Inserir clientes de exemplo
-INSERT INTO clientes (nome, cpf, data_nascimento, limite_credito, status_bloqueio) VALUES
-('João Silva', '12345678901', '1985-03-15', 5000.00, 'A'),
-('Maria Santos', '98765432100', '1990-07-22', 3000.00, 'A'),
-('Pedro Oliveira', '11122233344', '1988-11-10', 7500.00, 'A'),
-('Ana Costa', '55566677788', '1992-05-18', 4000.00, 'A'),
-('Carlos Ferreira', '99988877766', '1987-09-25', 6000.00, 'A'),
-('Lucia Mendes', '12312312312', '1995-12-03', 0.00, 'B'),
-('Roberto Alves', '45645645645', '1983-08-14', 0.00, 'B');
+INSERT INTO clientes (nome, cpf, data_nascimento, limite_credito, limite_disponivel, status_bloqueio) VALUES
+('João Silva', '12345678901', '1985-03-15', 5000.00, 5000.00, 'A'),
+('Maria Santos', '98765432100', '1990-07-22', 3000.00, 3000.00, 'A'),
+('Pedro Oliveira', '11122233344', '1988-11-10', 7500.00, 7500.00, 'A'),
+('Ana Costa', '55566677788', '1992-05-18', 4000.00, 4000.00, 'A'),
+('Carlos Ferreira', '99988877766', '1987-09-25', 6000.00, 6000.00, 'A'),
+('Lucia Mendes', '12312312312', '1995-12-03', 30000.00, 0.00, 'B'),
+('Roberto Alves', '45645645645', '1983-08-14', 1500.00, 0.00, 'B');
 
 -- Inserir faturas de exemplo
 -- Faturas pagas

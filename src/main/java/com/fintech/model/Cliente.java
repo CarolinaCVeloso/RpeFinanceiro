@@ -37,6 +37,9 @@ public class Cliente {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal limiteCredito;
     
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal limiteDisponivel;
+    
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Fatura> faturas;
     
@@ -48,6 +51,7 @@ public class Cliente {
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.limiteCredito = limiteCredito;
+        this.limiteDisponivel = limiteCredito;
         this.statusBloqueio = "A"; // A=Ativo, B=Bloqueado
     }
     
@@ -100,6 +104,9 @@ public class Cliente {
         this.limiteCredito = limiteCredito;
     }
     
+    public BigDecimal getLimiteDisponivel() { return limiteDisponivel; }
+    public void setLimiteDisponivel(BigDecimal limiteDisponivel) { this.limiteDisponivel = limiteDisponivel; }
+    
     public List<Fatura> getFaturas() {
         return faturas;
     }
@@ -119,13 +126,14 @@ public class Cliente {
     
     public void bloquear() {
         this.statusBloqueio = "B";
-        this.limiteCredito = BigDecimal.ZERO; // Zera o limite de crédito
+        this.limiteDisponivel = BigDecimal.ZERO; // Zera o limite de crédito
+        System.out.println("[DEBUG] Cliente bloqueado: id=" + this.id + ", limiteDisponivel zerado.");
     }
     
     public void desbloquear() {
         this.statusBloqueio = "A";
-        // Normaliza o limite de crédito para R$ 2.000,00 quando desbloqueado
-        this.limiteCredito = new BigDecimal("2000.00");
+        this.limiteDisponivel = this.limiteCredito;
+        System.out.println("[DEBUG] Cliente desbloqueado: id=" + this.id + ", limiteDisponivel restaurado para " + this.limiteCredito);
     }
     
     @Override
